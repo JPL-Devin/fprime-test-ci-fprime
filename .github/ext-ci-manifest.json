@@ -1,0 +1,25 @@
+{
+  "check_prefix": "ext-ci",
+  "repos": [
+    {
+      "id": "ext-a",
+      "repository": "JPL-Devin/fprime-test-ci-ext-a",
+      "workflow": "ci.yml",
+      "default_ref": "main",
+      "timeout_minutes": 30,
+      "failure_policy": "block",
+      "owners": ["thomas-bc"],
+      "on_pr": true
+    },
+    {
+      "id": "ext-b",
+      "repository": "JPL-Devin/fprime-test-ci-ext-b",
+      "workflow": "ci.yml",
+      "default_ref": "main",
+      "timeout_minutes": 30,
+      "failure_policy": "block",
+      "owners": ["thomas-bc"],
+      "on_pr": true
+    }
+  ]
+}
