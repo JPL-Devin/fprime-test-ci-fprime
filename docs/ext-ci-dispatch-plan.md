@@ -237,3 +237,5 @@ Not yet demonstrated:
 - Self-hosted runner visibility, GitHub App credential, `release/**` manifest selection: production-only concerns.
 
 Production deltas vs. the prototype: credential becomes a GitHub App installation token minted per run (`actions: write` on fprime-community repos only); orchestrator script moves to `nasa/fprime-actions` as a composite/JS action; ext `ci.yml` files call the existing `nasa/fprime-actions` reusable pieces instead of the simulated `ci/*.sh`.
+
+Docs-only change for the skipped-check evidence run.
