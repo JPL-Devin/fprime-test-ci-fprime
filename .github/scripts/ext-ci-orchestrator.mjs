@@ -507,6 +507,7 @@ async function run() {
     if (s.carried_forward) continue;
     try { await finalizeOne(target, s); }
     catch (e) { console.log(`::error::[${s.id}] finalize: ${e.message}`); s.conclusion = s.conclusion || 'failure'; }
+    saveState(state);
   }
   writeSummary(target, state);
   const blocking = Object.values(state.repos).filter((s) => s.failure_policy !== 'notify' && s.conclusion !== 'success' && s.conclusion !== 'skipped');
@@ -529,6 +530,8 @@ async function finalize() {
       await ext.post(`/repos/${s.repository}/actions/runs/${s.remote_run_id}/cancel`).catch((e) => console.log(`  ${e.message}`));
     }
     if (s.check_run_id) {
+      const current = await own.get(`/repos/${repo}/check-runs/${s.check_run_id}`).catch(() => null);
+      if (current && current.status === 'completed') continue;
       const conclusion = cancelled ? 'cancelled' : (s.failure_policy === 'notify' ? 'neutral' : 'failure');
       const why = cancelled ? 'The orchestrator run was cancelled' : `The orchestrator run ended before this repo was reported (${code(s.error || 'orchestrator error')})`;
       await own.patch(`/repos/${repo}/check-runs/${s.check_run_id}`, {
