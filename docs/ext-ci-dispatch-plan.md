@@ -237,3 +237,17 @@ Not yet demonstrated:
 - Self-hosted runner visibility, GitHub App credential, `release/**` manifest selection: production-only concerns.
 
 Production deltas vs. the prototype: credential becomes a GitHub App installation token minted per run (`actions: write` on fprime-community repos only); orchestrator script moves to `nasa/fprime-actions` as a composite/JS action; ext `ci.yml` files call the existing `nasa/fprime-actions` reusable pieces instead of the simulated `ci/*.sh`.
+
+## 9. Hardened prototype (after the 9-session review)
+
+Fixes folded in: run id taken from the dispatch response (`return_run_details: true`, no `run-name` correlation); bounded retries with rate-limit back-off, per-repo error isolation and an `always()` finalizer; 60 s conditional polling; `paths_ignore` applied by the orchestrator (trigger has no paths filter) with `skipped` Check Runs; `merge_group` trigger; notify markers only honoured in `github-actions[bot]` comments/issues, `ext-ci` label, remote text rendered in code spans; carry-forward only of Check Runs stamped with this run's `external_id`; branch probe treats only 404 as absent; `fprime_pr_number` dispatched; fork preflight (`upstream_repository`); nightly `schedule` instead of push-to-default; cancel-in-progress only for PR fan-outs.
+
+| Scenario | Evidence |
+|---|---|
+| Dispatch with returned run id, both repos green | [run 39381412160](https://github.com/JPL-Devin/fprime-test-ci-fprime/actions/runs/39381412160), [run 39384105447](https://github.com/JPL-Devin/fprime-test-ci-fprime/actions/runs/39384105447) |
+| Docs-only PR → `skipped` Check Runs, no dispatch | [PR #4](https://github.com/JPL-Devin/fprime-test-ci-fprime/pull/4) |
+| Block failure, then failed-only re-run with `external_id`-matched carry-forward and `pr-5` resolution | [PR #5](https://github.com/JPL-Devin/fprime-test-ci-fprime/pull/5), [run 39381667948](https://github.com/JPL-Devin/fprime-test-ci-fprime/actions/runs/39381667948) attempts 1–2 |
+| Cancellation handled by the finalizer (remote run cancelled, check `cancelled`) | [run 39382333332](https://github.com/JPL-Devin/fprime-test-ci-fprime/actions/runs/39382333332) |
+| Real `ci.yml` bodies (led-blinker build+UT, zephyr build, generic-hub round-trip) run green on the JPL-Devin forks' `devel` | see the fork Actions tabs (push runs) |
+
+Found on the way: `POST …/dispatches` answers **404** unless the workflow file exists on the target repo's *default* branch — a `ci.yml` that only lives on a feature branch cannot be dispatched, so each external repo's `ci.yml` PR must merge before that repo can be added to the manifest. Dispatching into the JPL-Devin forks was not possible because the dispatch identity (`thomas-bc-autowot`) has read-only access there.
