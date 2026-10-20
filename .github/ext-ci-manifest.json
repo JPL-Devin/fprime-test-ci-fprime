@@ -1,5 +1,10 @@
 {
+  "upstream_repository": "JPL-Devin/fprime-test-ci-fprime",
   "check_prefix": "ext-ci",
+  "paths_ignore": [
+    "docs/**",
+    "**.md"
+  ],
   "repos": [
     {
       "id": "ext-a",
