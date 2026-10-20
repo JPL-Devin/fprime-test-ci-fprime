@@ -29,6 +29,42 @@
         "thomas-bc"
       ],
       "on_pr": true
+    },
+    {
+      "id": "led-blinker",
+      "repository": "fprime-community/fprime-workshop-led-blinker",
+      "workflow": "ci.yml",
+      "default_ref": "ext-ci-dispatch",
+      "timeout_minutes": 90,
+      "failure_policy": "notify",
+      "owners": [
+        "thomas-bc"
+      ],
+      "on_pr": true
+    },
+    {
+      "id": "zephyr-reference",
+      "repository": "fprime-community/fprime-zephyr-reference",
+      "workflow": "ci.yml",
+      "default_ref": "ext-ci-dispatch",
+      "timeout_minutes": 90,
+      "failure_policy": "notify",
+      "owners": [
+        "thomas-bc"
+      ],
+      "on_pr": true
+    },
+    {
+      "id": "generic-hub-reference",
+      "repository": "fprime-community/fprime-generic-hub-reference",
+      "workflow": "ci.yml",
+      "default_ref": "ext-ci-dispatch",
+      "timeout_minutes": 90,
+      "failure_policy": "notify",
+      "owners": [
+        "thomas-bc"
+      ],
+      "on_pr": true
     }
   ]
 }
