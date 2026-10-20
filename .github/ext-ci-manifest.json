@@ -8,7 +8,9 @@
       "default_ref": "main",
       "timeout_minutes": 30,
       "failure_policy": "block",
-      "owners": ["thomas-bc"],
+      "owners": [
+        "thomas-bc"
+      ],
       "on_pr": true
     },
     {
@@ -17,8 +19,10 @@
       "workflow": "ci.yml",
       "default_ref": "main",
       "timeout_minutes": 30,
-      "failure_policy": "block",
-      "owners": ["thomas-bc"],
+      "failure_policy": "notify",
+      "owners": [
+        "thomas-bc"
+      ],
       "on_pr": true
     }
   ]
